@@ -1,100 +1,62 @@
-extern crate dialoguer;
-use dialoguer::{theme::ColorfulTheme, Input, Select};
+mod cli;
+mod enums;
+mod macro_calc;
 
-pub enum Exercise {
-    Sedentary,
-    Light,
-    Moderate,
-    Heavy,
-}
-
-pub enum Goal {
-    Lose,
-    Maintain,
-    Gain,
-}
+extern crate console;
+use console::{style, Term};
 
 fn main() {
-    // clear the terminal using the clear command from linux
-    std::process::Command::new("clear").status().unwrap();
+    let term = Term::stdout();
+    term.clear_screen().unwrap();
 
-    println!("===========================================");
-    println!("============= Macro Calculator ============");
-    println!("=============  Made by Mario   ============");
-    println!("===========================================");
+    // Header
+    println!("{}", style("Macro Calculator by Mario").bold().underlined());
+    println!();
 
-    println!("");
+    let weight = cli::get_weight();
+    let exercise = cli::get_exercise_level();
+    let goal = cli::get_goal();
 
-    let weight: f32 = Input::new()
-        .with_prompt("Enter your weight in kg")
-        .interact()
-        .unwrap();
-
-    let exercise_selections = &["Sedentary", "Light", "Moderate", "Heavy"];
-    let exercise_choice = Select::with_theme(&ColorfulTheme::default())
-        .with_prompt("Select your exercise level")
-        .default(0)
-        .items(&exercise_selections[..])
-        .interact()
-        .unwrap();
-    let exercise = match exercise_choice {
-        0 => Exercise::Sedentary,
-        1 => Exercise::Light,
-        2 => Exercise::Moderate,
-        3 => Exercise::Heavy,
-        _ => unreachable!(),
-    };
-
-    let goal_selections = &["Lose weight", "Maintain weight", "Gain weight"];
-    let goal_choice = Select::with_theme(&ColorfulTheme::default())
-        .with_prompt("What is your goal?")
-        .default(0)
-        .items(&goal_selections[..])
-        .interact()
-        .unwrap();
-    let goal = match goal_choice {
-        0 => Goal::Lose,
-        1 => Goal::Maintain,
-        2 => Goal::Gain,
-        _ => unreachable!(),
-    };
-
-    let calories = match exercise {
-        Exercise::Sedentary => weight * 22.0 * 1.2,
-        Exercise::Light => weight * 22.0 * 1.4,
-        Exercise::Moderate => weight * 22.0 * 1.6,
-        Exercise::Heavy => weight * 22.0 * 1.8,
-    };
-
-    let calories = match goal {
-        Goal::Lose => calories - (calories * 0.2),
-        Goal::Maintain => calories,
-        Goal::Gain => calories + (calories * 0.2),
-    };
-
-    println!("Your max calorie intake should be: {:.1}", calories);
-
-    let protein_grams = weight * 2.5;
-    let protein_calories = protein_grams * 4.0;
-
-    let fat_grams = weight;
-    let fat_calories = fat_grams * 9.0;
-
-    let carbs_calories = calories - (protein_calories + fat_calories);
-    let carbs_grams = carbs_calories / 4.0;
-
-    println!("=================== Your Macros ===================");
+    let calories = macro_calc::calculate_calories(weight, exercise, goal);
     println!(
-        "Protein: {:>5.1} grams | {:>5.1} calories",
-        protein_grams, protein_calories
+        "\n{}",
+        style(format!(
+            "Your max calorie intake should be: {:.2}",
+            calories
+        ))
+        .green()
+        .bold()
+    );
+
+    let (protein_grams, protein_calories, fat_grams, fat_calories, carbs_grams, carbs_calories) =
+        macro_calc::calculate_macros(weight, calories);
+
+    // Macros output
+    println!(
+        "\n{}",
+        style("=================== Your Macros ===================").bold()
     );
     println!(
-        "Fat:     {:>5.1} grams | {:>5.1} calories",
-        fat_grams, fat_calories
+        "{}: {:>5.1} grams | {:>5.1} calories",
+        style("Protein").blue().bold(),
+        protein_grams,
+        protein_calories
     );
     println!(
-        "Carbs:   {:>5.1} grams | {:>5.1} calories",
-        carbs_grams, carbs_calories
+        "{}:     {:>5.1} grams | {:>5.1} calories",
+        style("Fat").red().bold(),
+        fat_grams,
+        fat_calories
     );
-    println!("===================================================");
+    println!(
+        "{}:   {:>5.1} grams | {:>5.1} calories",
+        style("Carbs").yellow().bold(),
+        carbs_grams,
+        carbs_calories
+    );
+    println!(
+        "{}",
+        style("===================================================").bold()
+    );
+    println!();
 }
