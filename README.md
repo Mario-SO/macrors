@@ -16,9 +16,10 @@ It's simple and straightforward to get your feet wet with the Macro Calculator. 
 ## How to Run 🏃
 
 1. Clone this repository to your local machine.
-2. Navigate to the project directory.
-3. Run the program with `cargo run` (make sure you have Rust installed).
-4. Follow the prompts to get your macro calculations.
+2. run `export OPEN_AI_KEY=<your key>` in your terminal.
+3. Navigate to the project directory.
+4. Run the program with `cargo run` (make sure you have Rust installed).
+5. Follow the prompts to get your macro calculations.
 
 # P.S. 📜
 I have no idea about nutrition, and this program is based on a YouTube video I stumbled upon. It's a fun project to dive into Rust and create something interactive. Use at your own discretion and consider consulting a nutritionist for professional advice! 🥦
