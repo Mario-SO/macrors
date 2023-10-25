@@ -1,6 +1,7 @@
 mod cli;
 mod enums;
 mod macro_calc;
+mod meal_prep;
 
 extern crate console;
 use console::{style, Term};
@@ -10,7 +11,7 @@ fn main() {
     term.clear_screen().unwrap();
 
     // Header
-    println!("{}", style("Macro Calculator by Mario").bold().underlined());
+    println!("{}", style("Macro-Diet by mariodev").bold().underlined());
     println!();
 
     let weight = cli::get_weight();
@@ -21,7 +22,7 @@ fn main() {
     println!(
         "\n{}",
         style(format!(
-            "Your max calorie intake should be: {:.2}",
+            "Your maximun calorie intake should be: {:.2}",
             calories
         ))
         .green()
@@ -59,4 +60,21 @@ fn main() {
         style("===================================================").bold()
     );
     println!();
+
+    println!(
+        "{}",
+        style("Recommended 5-day meal prep").bold().underlined()
+    );
+    println!();
+
+    let result = meal_prep::meal_prep(protein_grams, fat_grams, carbs_grams);
+
+    match result {
+        Ok(diet_plan) => {
+            println!("{}", diet_plan);
+        }
+        Err(e) => {
+            eprintln!("Error occurred: {}", e); // Prints to standard error
+        }
+    }
 }
