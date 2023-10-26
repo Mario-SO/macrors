@@ -40,3 +40,18 @@ pub fn get_goal() -> Goal {
         _ => unreachable!(),
     }
 }
+
+pub fn want_meal_prep() -> bool {
+    let meal_prep_selections = &["Yes", "No"];
+    let meal_prep_choice = Select::with_theme(&ColorfulTheme::default())
+        .with_prompt("Do you want to see meal prep ideas? (requires OpenAI API key)")
+        .default(0)
+        .items(&meal_prep_selections[..])
+        .interact()
+        .unwrap();
+    match meal_prep_choice {
+        0 => true,
+        1 => false,
+        _ => unreachable!(),
+    }
+}

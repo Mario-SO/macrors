@@ -61,20 +61,27 @@ fn main() {
     );
     println!();
 
-    println!(
-        "{}",
-        style("Recommended 5-day meal prep").bold().underlined()
-    );
-    println!();
+    if cli::want_meal_prep() {
+        let result = meal_prep::meal_prep(protein_grams, fat_grams, carbs_grams);
 
-    let result = meal_prep::meal_prep(protein_grams, fat_grams, carbs_grams);
-
-    match result {
-        Ok(diet_plan) => {
-            println!("{}", diet_plan);
+        match result {
+            Ok(diet_plan) => {
+                println!(
+                    "{}",
+                    style("Recommended 5-day meal prep").bold().underlined()
+                );
+                println!();
+                println!("{}", diet_plan);
+            }
+            Err(e) => {
+                eprintln!("Error occurred: {}", e); // Prints to standard error
+            }
         }
-        Err(e) => {
-            eprintln!("Error occurred: {}", e); // Prints to standard error
-        }
+    } else {
+        println!();
+        println!(
+            "{}",
+            style("Thank you for using Macro-Diet!").bold().underlined()
+        );
     }
 }
