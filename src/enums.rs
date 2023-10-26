@@ -10,3 +10,8 @@ pub enum Goal {
     Maintain,
     Gain,
 }
+
+pub enum Gender {
+    Male,
+    Female,
+}

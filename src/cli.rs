@@ -1,8 +1,8 @@
-use crate::enums::{Exercise, Goal};
+use crate::enums::{Exercise, Gender, Goal};
 use dialoguer::{theme::ColorfulTheme, Input, Select};
 
 pub fn get_weight() -> f32 {
-    Input::new()
+    Input::with_theme(&ColorfulTheme::default())
         .with_prompt("Enter your weight in kg")
         .interact()
         .unwrap()
@@ -21,6 +21,21 @@ pub fn get_exercise_level() -> Exercise {
         1 => Exercise::Light,
         2 => Exercise::Moderate,
         3 => Exercise::Heavy,
+        _ => unreachable!(),
+    }
+}
+
+pub fn get_gender() -> Gender {
+    let gender_selection = &["Male", "Female"];
+    let gender_choice = Select::with_theme(&ColorfulTheme::default())
+        .with_prompt("Select your gender")
+        .default(0)
+        .items(&gender_selection[..])
+        .interact()
+        .unwrap();
+    match gender_choice {
+        0 => Gender::Male,
+        1 => Gender::Female,
         _ => unreachable!(),
     }
 }

@@ -15,6 +15,7 @@ fn main() {
     println!();
 
     let weight = cli::get_weight();
+    let _gender = cli::get_gender();
     let exercise = cli::get_exercise_level();
     let goal = cli::get_goal();
 
