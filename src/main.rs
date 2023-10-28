@@ -15,11 +15,13 @@ fn main() {
     println!();
 
     let weight = cli::get_weight();
-    let _gender = cli::get_gender();
+    let height = cli::get_height();
+    let age = cli::get_age();
+    let gender = cli::get_gender();
     let exercise = cli::get_exercise_level();
     let goal = cli::get_goal();
 
-    let calories = macro_calc::calculate_calories(weight, exercise, goal);
+    let calories = macro_calc::calculate_calories(weight, height, age, gender, exercise, goal);
     println!(
         "\n{}",
         style(format!(

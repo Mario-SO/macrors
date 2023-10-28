@@ -1,11 +1,30 @@
-use crate::enums::{Exercise, Goal};
+use crate::enums::{Exercise, Gender, Goal};
 
-pub fn calculate_calories(weight: f32, exercise: Exercise, goal: Goal) -> f32 {
-    let calories = match exercise {
-        Exercise::Sedentary => weight * 22.0 * 1.2,
-        Exercise::Light => weight * 22.0 * 1.4,
-        Exercise::Moderate => weight * 22.0 * 1.6,
-        Exercise::Heavy => weight * 22.0 * 1.8,
+pub fn calculate_calories(
+    weight: f32,
+    height: f32,
+    age: f32,
+    gender: Gender,
+    exercise: Exercise,
+    goal: Goal,
+) -> f32 {
+    let ree_male = 10.0 * weight + 6.25 * height - 5.0 * age + 5.0;
+    let ree_female = 10.0 * weight + 6.25 * height - 5.0 * age - 161.0;
+
+    let calories = if matches!(gender, Gender::Male) {
+        match exercise {
+            Exercise::Sedentary => ree_male * 1.2,
+            Exercise::Light => ree_male * 1.375,
+            Exercise::Moderate => ree_male * 1.55,
+            Exercise::Heavy => ree_male * 1.725,
+        }
+    } else {
+        match exercise {
+            Exercise::Sedentary => ree_female * 1.2,
+            Exercise::Light => ree_female * 1.375,
+            Exercise::Moderate => ree_female * 1.55,
+            Exercise::Heavy => ree_female * 1.725,
+        }
     };
 
     match goal {

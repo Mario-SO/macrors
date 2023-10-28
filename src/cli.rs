@@ -8,21 +8,18 @@ pub fn get_weight() -> f32 {
         .unwrap()
 }
 
-pub fn get_exercise_level() -> Exercise {
-    let exercise_selections = &["Sedentary", "Light", "Moderate", "Heavy"];
-    let exercise_choice = Select::with_theme(&ColorfulTheme::default())
-        .with_prompt("Select your exercise level")
-        .default(0)
-        .items(&exercise_selections[..])
+pub fn get_height() -> f32 {
+    Input::with_theme(&ColorfulTheme::default())
+        .with_prompt("Enter your height in cm")
         .interact()
-        .unwrap();
-    match exercise_choice {
-        0 => Exercise::Sedentary,
-        1 => Exercise::Light,
-        2 => Exercise::Moderate,
-        3 => Exercise::Heavy,
-        _ => unreachable!(),
-    }
+        .unwrap()
+}
+
+pub fn get_age() -> f32 {
+    Input::with_theme(&ColorfulTheme::default())
+        .with_prompt("Enter your age")
+        .interact()
+        .unwrap()
 }
 
 pub fn get_gender() -> Gender {
@@ -36,6 +33,23 @@ pub fn get_gender() -> Gender {
     match gender_choice {
         0 => Gender::Male,
         1 => Gender::Female,
+        _ => unreachable!(),
+    }
+}
+
+pub fn get_exercise_level() -> Exercise {
+    let exercise_selections = &["Sedentary", "Light", "Moderate", "Heavy"];
+    let exercise_choice = Select::with_theme(&ColorfulTheme::default())
+        .with_prompt("Select your exercise level")
+        .default(0)
+        .items(&exercise_selections[..])
+        .interact()
+        .unwrap();
+    match exercise_choice {
+        0 => Exercise::Sedentary,
+        1 => Exercise::Light,
+        2 => Exercise::Moderate,
+        3 => Exercise::Heavy,
         _ => unreachable!(),
     }
 }
