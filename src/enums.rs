@@ -1,3 +1,4 @@
+#[derive(Clone, Copy)]
 pub enum Exercise {
     Sedentary,
     Light,
@@ -10,7 +11,7 @@ pub enum Goal {
     Maintain,
     Gain,
 }
-
+#[derive(Clone, Copy)]
 pub enum Gender {
     Male,
     Female,

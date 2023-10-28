@@ -1,6 +1,6 @@
 mod cli;
+mod data_calc;
 mod enums;
-mod macro_calc;
 mod meal_prep;
 
 extern crate console;
@@ -21,7 +21,28 @@ fn main() {
     let exercise = cli::get_exercise_level();
     let goal = cli::get_goal();
 
-    let calories = macro_calc::calculate_calories(weight, height, age, gender, exercise, goal);
+    println!();
+
+    let bmr = data_calc::calculate_bmr(weight, height, age, gender);
+    println!(
+        "{}",
+        style(format!("Your BMR (Basal Metabolic Rate) is: {:.2}", bmr))
+            .green()
+            .bold()
+    );
+
+    let tdee = data_calc::calculate_tdee(bmr, exercise);
+    println!(
+        "{}",
+        style(format!(
+            "Your TDEE (Total Daily Energy Expendeture) is: {:.2}",
+            tdee
+        ))
+        .green()
+        .bold()
+    );
+
+    let calories = data_calc::calculate_max_calories(weight, height, age, gender, exercise, goal);
     println!(
         "\n{}",
         style(format!(
@@ -33,7 +54,7 @@ fn main() {
     );
 
     let (protein_grams, protein_calories, fat_grams, fat_calories, carbs_grams, carbs_calories) =
-        macro_calc::calculate_macros(weight, calories);
+        data_calc::calculate_macros(weight, calories);
 
     // Macros output
     println!(
