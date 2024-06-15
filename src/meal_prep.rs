@@ -10,7 +10,7 @@ pub fn meal_prep(
     let client = Client::new(env::var("OPENAI_API_KEY").unwrap().to_string());
 
     let req = ChatCompletionRequest::new(
-        chat_completion::GPT3_5_TURBO.to_string(),
+        chat_completion::GPT4.to_string(),
         vec![chat_completion::ChatCompletionMessage {
             role: chat_completion::MessageRole::user,
             content: format!("Based on this macros, create a 5-day meal prep using International System quantities:\nProteins: {} grams\nFats: {} grams\nCarbs: {} grams", protein_grams, fat_grams, carbs_grams),
